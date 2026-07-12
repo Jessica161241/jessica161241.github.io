@@ -122,16 +122,8 @@ a{ color: inherit; text-decoration: none; }
   font-size: clamp(32px, 5.4vw, 56px);
   line-height: 1.18;
   letter-spacing: -0.01em;
-  margin: 0 0 26px 0;
+  margin: 0 0 36px 0;
   max-width: 16ch;
-}
-
-.hero-sub{
-  font-size: 16px;
-  line-height: 1.75;
-  color: var(--paper-dim);
-  max-width: 46ch;
-  margin: 0 0 34px 0;
 }
 
 .hero-cta{
@@ -187,7 +179,7 @@ main{
   background: var(--accent-dim);
 }
 
-.work{ padding: 72px 0 24px; }
+.work{ padding: 72px 0 96px; }
 
 /* ---------- 作品卡片 ---------- */
 
@@ -229,14 +221,6 @@ main{
   display: flex;
   flex-direction: column;
   flex: 1;
-}
-
-.card-index{
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: var(--paper-dim);
-  margin: 0 0 10px 0;
 }
 
 .card-title{
@@ -283,16 +267,6 @@ main{
 .work-card.placeholder .card-title{ color: var(--paper-dim); }
 .work-card.placeholder .card-desc{ margin-bottom: 0; }
 
-/* ---------- About ---------- */
-
-.about{ padding: 24px 0 96px; border-top: 1px solid var(--line); margin-top: 72px; }
-.about-text{
-  font-size: 15px;
-  line-height: 1.8;
-  color: var(--paper-dim);
-  max-width: 56ch;
-}
-
 /* ---------- Footer ---------- */
 
 .page-footer{
@@ -325,12 +299,12 @@ main{
 
 /* ---------- 滚动进入动效 ---------- */
 
-.work-card, .about-text{
+.work-card{
   opacity: 0;
   transform: translateY(14px);
   transition: opacity .5s ease, transform .5s ease;
 }
-.work-card.in-view, .about-text.in-view{
+.work-card.in-view{
   opacity: 1;
   transform: translateY(0);
 }
