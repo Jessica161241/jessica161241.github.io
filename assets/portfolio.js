@@ -21,7 +21,7 @@
 
 // 滚动进入视口时的淡入动效
 (function scrollReveal() {
-  const targets = document.querySelectorAll(".work-card, .about-text");
+  const targets = document.querySelectorAll(".work-card");
   if (!("IntersectionObserver" in window)) {
     targets.forEach((t) => t.classList.add("in-view"));
     return;
