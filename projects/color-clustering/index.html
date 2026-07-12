@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>图片色彩聚类可视化</title>
+    <meta name="description" content="基于 K-means 的图片颜色聚类可视化工具" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="assets/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="mark"></span>
+        <div>
+          <h1>图片色彩聚类可视化</h1>
+          <div class="sub">基于 K-means 聚类算法</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <!-- 左侧：图片与参数控制 -->
+      <section class="pane">
+        <div class="block">
+          <p class="section-label">01 · 图片来源</p>
+
+          <div class="dropzone" id="dropzone" tabindex="0">
+            点击选择本地图片，或将图片拖拽到此处
+            <input type="file" id="fileInput" accept="image/*" />
+          </div>
+
+          <div class="sample-grid" id="sampleGrid"></div>
+
+          <div class="preview-wrap" id="previewWrap">
+            <div class="placeholder">图片预览</div>
+          </div>
+        </div>
+
+        <div class="block">
+          <p class="section-label">02 · 聚类参数</p>
+
+          <div class="field">
+            <label>聚类 K 的值<span class="val" id="kVal">5</span></label>
+            <input
+              type="range"
+              id="kRange"
+              min="2"
+              max="10"
+              value="5"
+              step="1"
+            />
+          </div>
+
+          <div class="field">
+            <label>颜色空间</label>
+            <div class="seg" id="colorSpaceSeg">
+              <button data-value="rgb" class="active">RGB</button>
+              <button data-value="lab">LAB</button>
+            </div>
+            <p class="hint">
+              RGB 按设备原始三通道欧氏距离聚类；LAB
+              按人眼感知均匀空间聚类，通常颜色分组更符合视觉直觉。
+            </p>
+          </div>
+        </div>
+
+        <div class="block">
+          <p class="section-label">03 · 图表样式</p>
+          <div class="seg" id="chartTypeSeg">
+            <button data-value="bar" class="active">柱状图</button>
+            <button data-value="pie">饼图</button>
+          </div>
+        </div>
+
+        <div class="status" id="status"></div>
+      </section>
+
+      <!-- 右侧：可视化结果 -->
+      <section class="pane">
+        <div class="block">
+          <p class="section-label">光谱条 · 各簇像素占比</p>
+          <div class="spectrum-strip" id="spectrum"></div>
+        </div>
+
+        <div class="block card">
+          <div class="chart-toolbar">
+            <h2>聚类可视化</h2>
+            <span class="hint" style="margin: 0"
+              >颜色 = 类簇中的像素颜色均值<br />数值 = 该类簇像素数量</span
+            >
+          </div>
+          <div id="chart"></div>
+        </div>
+
+        <div class="block">
+          <p class="section-label">聚类数据表</p>
+          <table class="cluster-table" id="clusterTable">
+            <thead>
+              <tr>
+                <th>类簇</th>
+                <th>颜色均值 (HEX)</th>
+                <th>颜色均值 (RGB)</th>
+                <th>像素数</th>
+                <th>占比</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="block card ai-panel">
+          <div class="chart-toolbar">
+            <h2>AI 配色和谐度判断</h2>
+            <span class="hint" style="margin: 0"
+              >调用 OpenAI 兼容接口（如 closeaiasia 等中转平台）</span
+            >
+          </div>
+
+          <div class="ai-row">
+            <div class="field">
+              <label>API Base URL</label>
+              <input
+                type="text"
+                id="aiBaseUrl"
+                placeholder="https://api.deepseek.com/v1"
+                value="https://api.deepseek.com/v1"
+              />
+            </div>
+            <div class="field">
+              <label>API Key</label>
+              <input 
+              type="password" 
+              id="aiApiKey" 
+              placeholder="sk-*****"
+              value="sk-5ac64b63f08548dd88384063dc3aa614"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label>模型名称</label>
+            <input
+              type="text"
+              id="aiModel"
+              placeholder="deepseek-v4-flash"
+              value="deepseek-v4-flash"
+            />
+          </div>
+
+          <button class="btn" id="aiRunBtn">
+            调用 AI 判断颜色搭配是否和谐
+          </button>
+          <div class="status" id="aiStatus"></div>
+
+          <div class="field" style="margin-top: 14px">
+            <label>AI 分析结果</label>
+            <div class="ai-result" id="aiResult">
+              尚未请求。填写接口信息后点击上方按钮。
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="assets/samples.js"></script>
+    <script src="assets/app.js"></script>
+  </body>
+</html>
